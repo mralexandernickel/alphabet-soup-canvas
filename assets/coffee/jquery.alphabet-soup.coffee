@@ -4,7 +4,7 @@ config =
   # the plate
   canvas: false
   # number of letters in the soup
-  letter_count: 100
+  letter_count: 500
   # letters which are used to generate the soup
   alphabet: ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
   # define canvas width
@@ -34,16 +34,37 @@ methods =
   
   create_letters: ->
     while config.letter_count -= 1
+      config.context.save()
+      
+      # define the letter configuration
+      current_letter =
+        letter: methods.get_random_letter()
+        position:
+          x: methods.get_random_array_item(config.visible_positions_left)
+          y: methods.get_random_array_item(config.visible_positions_top)
+      
+      # set the canvas center to the point where we draw our letter
+      config.context.translate current_letter.position.x, current_letter.position.y
+      
       config.context.fillStyle = "#fff"
       config.context.font = "#{methods.get_random_array_item(config.font_sizes)}px sans-serif"
-      config.context.textBaseline = "bottom"
+      config.context.textBaseline = "middle"
       config.context.rotate methods.degrees_to_radians(methods.get_random_degrees())
-      config.context.fillText methods.get_random_letter(), methods.get_random_array_item(config.visible_positions_left), methods.get_random_array_item(config.visible_positions_top)
+      config.context.fillText current_letter.letter, current_letter.position.x, current_letter.position.y
+      config.context.restore()
   
   set_canvas_dimensions: ->
     config.canvas.width = config.width
     config.canvas.height = config.height
   
+  # 
+  #  conversion from degrees to radians
+  #  
+  #  @author Alexander Nickel <mr.alexander.nickel@gmail.com>
+  #  @date 2013-05-11T19:11:46Z
+  #
+  #  @see http://en.wikipedia.org/wiki/Radian
+  # 
   degrees_to_radians: (degrees) -> degrees * (Math.PI / 180)
   
   show_letters: ->

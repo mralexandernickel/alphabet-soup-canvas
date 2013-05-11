@@ -12,7 +12,7 @@
 
   config = {
     canvas: false,
-    letter_count: 100,
+    letter_count: 500,
     alphabet: ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"],
     width: window.innerWidth,
     height: window.innerHeight,
@@ -47,15 +47,25 @@
       return methods.create_letters();
     },
     create_letters: function() {
-      var _results4;
+      var current_letter, _results4;
 
       _results4 = [];
       while (config.letter_count -= 1) {
+        config.context.save();
+        current_letter = {
+          letter: methods.get_random_letter(),
+          position: {
+            x: methods.get_random_array_item(config.visible_positions_left),
+            y: methods.get_random_array_item(config.visible_positions_top)
+          }
+        };
+        config.context.translate(current_letter.position.x, current_letter.position.y);
         config.context.fillStyle = "#fff";
         config.context.font = "" + (methods.get_random_array_item(config.font_sizes)) + "px sans-serif";
-        config.context.textBaseline = "bottom";
+        config.context.textBaseline = "middle";
         config.context.rotate(methods.degrees_to_radians(methods.get_random_degrees()));
-        _results4.push(config.context.fillText(methods.get_random_letter(), methods.get_random_array_item(config.visible_positions_left), methods.get_random_array_item(config.visible_positions_top)));
+        config.context.fillText(current_letter.letter, current_letter.position.x, current_letter.position.y);
+        _results4.push(config.context.restore());
       }
       return _results4;
     },
