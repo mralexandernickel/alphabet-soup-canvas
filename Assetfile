@@ -1,0 +1,32 @@
+require "rake-pipeline-web-filters"
+require "rake-pipeline-web-filters/helpers"
+require "json"
+require "haml"
+
+assets_path = "public/assets"
+
+# compile and concat all LESS files...
+output "#{assets_path}/css"
+input "assets" do
+  match "less/master.less" do
+    less :paths => ["assets/less"]
+      copy "alphabet-soup.css"
+  end
+end
+
+# compile and concat all coffeescripts...
+output "#{assets_path}/js"
+input "assets" do
+  match "coffee/*.coffee" do
+    coffee_script
+    concat "alphabet-soup.js"
+  end
+end
+
+# compile all HAML files...
+output "public"
+input "assets/haml" do
+  match "*.haml" do
+    filter(Rake::Pipeline::Web::Filters::TiltFilter) { |input| input.sub(/\.haml$/, ".html") }
+  end
+end
