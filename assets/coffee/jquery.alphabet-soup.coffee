@@ -34,6 +34,7 @@ methods =
   
   create_letters: ->
     while config.letter_count -= 1
+      # save coordinates
       config.context.save()
       
       # define the letter configuration
@@ -46,11 +47,18 @@ methods =
       # set the canvas center to the point where we draw our letter
       config.context.translate current_letter.position.x, current_letter.position.y
       
+      # styles for the letter
       config.context.fillStyle = "#fff"
       config.context.font = "#{methods.get_random_array_item(config.font_sizes)}px sans-serif"
       config.context.textBaseline = "middle"
+      
+      # rotate the stage
       config.context.rotate methods.degrees_to_radians(methods.get_random_degrees())
+      
+      # draw text on rotated stage
       config.context.fillText current_letter.letter, current_letter.position.x, current_letter.position.y
+      
+      # restore coordinates
       config.context.restore()
   
   set_canvas_dimensions: ->
