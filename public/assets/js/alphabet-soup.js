@@ -5,7 +5,7 @@
 
 }).call(this);
 (function() {
-  var $, config, methods, _i, _j, _results, _results1,
+  var $, config, methods, _i, _j, _k, _l, _ref, _ref1, _results, _results1, _results2, _results3,
     __slice = [].slice;
 
   $ = jQuery;
@@ -14,18 +14,28 @@
     canvas: false,
     letter_count: 100,
     alphabet: ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"],
-    width: 600,
-    height: 400,
+    width: window.innerWidth,
+    height: window.innerHeight,
     context: false,
     visible_positions_top: (function() {
       _results = [];
-      for (_i = 0; _i <= 400; _i++){ _results.push(_i); }
+      for (var _i = 0, _ref = window.innerHeight; 0 <= _ref ? _i <= _ref : _i >= _ref; 0 <= _ref ? _i++ : _i--){ _results.push(_i); }
       return _results;
     }).apply(this),
     visible_positions_left: (function() {
       _results1 = [];
-      for (_j = 0; _j <= 600; _j++){ _results1.push(_j); }
+      for (var _j = 0, _ref1 = window.innerWidth; 0 <= _ref1 ? _j <= _ref1 : _j >= _ref1; 0 <= _ref1 ? _j++ : _j--){ _results1.push(_j); }
       return _results1;
+    }).apply(this),
+    font_sizes: (function() {
+      _results2 = [];
+      for (_k = 12; _k < 128; _k++){ _results2.push(_k); }
+      return _results2;
+    }).apply(this),
+    degrees: (function() {
+      _results3 = [];
+      for (_l = 0; _l <= 360; _l++){ _results3.push(_l); }
+      return _results3;
     }).apply(this)
   };
 
@@ -37,27 +47,31 @@
       return methods.create_letters();
     },
     create_letters: function() {
-      var _results2;
+      var _results4;
 
-      _results2 = [];
+      _results4 = [];
       while (config.letter_count -= 1) {
         config.context.fillStyle = "#fff";
-        config.context.font = "30px sans-serif";
+        config.context.font = "" + (methods.get_random_array_item(config.font_sizes)) + "px sans-serif";
         config.context.textBaseline = "bottom";
-        _results2.push(config.context.fillText(methods.get_random_letter(), methods.get_random_array_item(config.visible_positions_left), methods.get_random_array_item(config.visible_positions_top)));
+        config.context.rotate(methods.degrees_to_radians(methods.get_random_degrees()));
+        _results4.push(config.context.fillText(methods.get_random_letter(), methods.get_random_array_item(config.visible_positions_left), methods.get_random_array_item(config.visible_positions_top)));
       }
-      return _results2;
+      return _results4;
     },
     set_canvas_dimensions: function() {
       config.canvas.width = config.width;
       return config.canvas.height = config.height;
     },
+    degrees_to_radians: function(degrees) {
+      return degrees * (Math.PI / 180);
+    },
     show_letters: function() {},
     get_random_letter: function() {
       return methods.get_random_array_item(config.alphabet);
     },
-    get_random_rotate: function() {
-      return methods.get_random_array_item(config.rotate_degrees);
+    get_random_degrees: function() {
+      return methods.get_random_array_item(config.degrees);
     },
     get_random_array_item: function(array) {
       return array[Math.floor(Math.random() * array.length)];

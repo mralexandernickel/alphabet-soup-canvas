@@ -8,9 +8,9 @@ config =
   # letters which are used to generate the soup
   alphabet: ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
   # define canvas width
-  width: 600
+  width: window.innerWidth
   # define canvas height
-  height: 400
+  height: window.innerHeight
   # we are extending this object with the canvas context on init()
   context: false
   # transitions supported by ???
@@ -18,12 +18,12 @@ config =
   # defining the initial positions
   #initial_positions: [-100..-5].concat [105..200]
   # defining rudimentary visible_positions to get a more exciting closing today ;-)
-  visible_positions_top: [0..400]
-  visible_positions_left: [0..600]
+  visible_positions_top: [0..window.innerHeight]
+  visible_positions_left: [0..window.innerWidth]
   # define possible font-sizes
-  #font_sizes: [12...128]
+  font_sizes: [12...128]
   # define rotate possibilities
-  #rotate_degrees: [0..360]
+  degrees: [0..360]
 
 methods =
   init: (options) ->
@@ -35,19 +35,22 @@ methods =
   create_letters: ->
     while config.letter_count -= 1
       config.context.fillStyle = "#fff"
-      config.context.font = "30px sans-serif"
+      config.context.font = "#{methods.get_random_array_item(config.font_sizes)}px sans-serif"
       config.context.textBaseline = "bottom"
+      config.context.rotate methods.degrees_to_radians(methods.get_random_degrees())
       config.context.fillText methods.get_random_letter(), methods.get_random_array_item(config.visible_positions_left), methods.get_random_array_item(config.visible_positions_top)
   
   set_canvas_dimensions: ->
     config.canvas.width = config.width
-    config.canvas.height = config.height    
+    config.canvas.height = config.height
+  
+  degrees_to_radians: (degrees) -> degrees * (Math.PI / 180)
   
   show_letters: ->
   
   get_random_letter: -> methods.get_random_array_item config.alphabet
   
-  get_random_rotate: -> methods.get_random_array_item config.rotate_degrees
+  get_random_degrees: -> methods.get_random_array_item config.degrees
   
   get_random_array_item: (array) -> array[Math.floor(Math.random()*array.length)]
 
