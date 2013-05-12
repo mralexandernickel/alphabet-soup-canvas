@@ -1,0 +1,6 @@
+[submodule "assets/lib/raphael"]
+	path = assets/lib/raphael
+	url = git://github.com/DmitryBaranovskiy/raphael.git
+[submodule "assets/lib/paper.js"]
+	path = assets/lib/paper.js
+	url = git://github.com/paperjs/paper.js.git

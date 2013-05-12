@@ -1,7 +1,14 @@
 body {
   margin: 0;
   padding: 0;
+  width: 100%;
+  height: 100%;
 }
 #alphabet-soup {
   background: black;
+}
+#the_canvas {
+  background: #000;
+  height: 100%;
+  width: 100%;
 }

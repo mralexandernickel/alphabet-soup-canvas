@@ -1,2 +1,2 @@
 $ ->
-  $("#alphabet-soup").alphabet_soup()
+  #$.alphabet_soup()
