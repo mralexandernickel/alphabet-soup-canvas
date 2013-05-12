@@ -7,16 +7,16 @@ assets_path = "public/assets"
 
 # compile and concat all LESS files...
 output "#{assets_path}/css"
-input "assets" do
+input "src" do
   match "less/master.less" do
-    less :paths => ["assets/less"]
+    less :paths => ["src/less"]
       copy "alphabet-soup.css"
   end
 end
 
 # compile and concat all coffeescripts...
 output "#{assets_path}/js"
-input "assets" do
+input "src" do
   match "coffee/*.coffee" do
     coffee_script
     concat "alphabet-soup.js"
@@ -25,7 +25,7 @@ end
 
 # compile and concat all paperscripts...
 output "#{assets_path}/js"
-input "assets" do
+input "src" do
   match "paper/*.js" do
     concat "paperscript.js"
   end
@@ -33,7 +33,7 @@ end
 
 # copy raphael to assets
 output "#{assets_path}/lib/raphael"
-input "assets/lib/raphael" do
+input "src/lib/raphael" do
   match "raphael-min.js" do
     copy
   end
@@ -41,7 +41,7 @@ end
 
 # compile all HAML files...
 output "public"
-input "assets/haml" do
+input "src/haml" do
   match "*.haml" do
     filter(Rake::Pipeline::Web::Filters::TiltFilter) { |input| input.sub(/\.haml$/, ".html") }
   end
